@@ -8,7 +8,7 @@ int main()
     {
     char h1[] = "Hello";
     char h2[] = "Hello!";
-    printf("hash(Hello) = [%llu], hash(Hello!) = [%llu]\n", hashCount(h1, sizeof(h1) - 1), hashCount(h2, sizeof(h2) - 1));
+    //printf("hash(Hello) = [%llu], hash(Hello!) = [%llu]\n", hashCount(h1, sizeof(h1) - 1), hashCount(h2, sizeof(h2) - 1));
     Stack tststack = {};
     stackCreate(&tststack);
 
@@ -27,6 +27,6 @@ int main()
     // stackDumpTest_t(&tststack, 24);
     for (size_t i = 0; i < tststack.size; i++)
         printf("<%d> %d ", i, tststack.dataptr[i]);
-    
+    printf("zaebis");
     return 0;
     }

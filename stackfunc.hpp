@@ -24,7 +24,7 @@ do                                                                              
 do                                                                                              \
 {                                                                                               \
     error_t error = verifyStack(stk);                                                           \
-    if (error != 0) {stackDump(stk, 24, __FILE__, __func__, __LINE__, "stk");};                 \
+    if (error != 0) {stackDump(stk, error, __FILE__, __func__, __LINE__, "stk");};                 \
 } while (0);    
 
 enum ERRORS 
@@ -36,7 +36,9 @@ enum ERRORS
      PointerNoValid = 32,
      LeftChickenArrayDied = 64,
      RightChickenArrayDied = 128,
-     ArrayTooBig = 256};
+     ArrayTooBig = 256,
+     StackHashWrong = 512,
+     ArrayHashWrong = 1024};
 
 struct Stack
     {
@@ -44,8 +46,12 @@ struct Stack
     elem_t* dataptr;
     size_t capacity;
     size_t size;
+    hash_t arrayhash;
+    hash_t stackhash;
     size_t rightChicken;
     };
+
+
 
 hash_t hashCount(void* source, size_t sizeb);
 int stackCreate(Stack* stk);
