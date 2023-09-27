@@ -16,7 +16,7 @@ typedef unsigned long long hash_t;
 #define stackDumpTest_t(stk, err)                                                               \
 do                                                                                              \
 {                                                                                               \
-    stackDump(stk, err, __FILE__, __func__, __LINE__, "stk");                                   \
+    stackDump(stk, err, __FILE__, __func__, __LINE__, #stk);                                   \
 } while (0)         
 
 
@@ -24,7 +24,7 @@ do                                                                              
 do                                                                                              \
 {                                                                                               \
     error_t error = verifyStack(stk);                                                           \
-    if (error != 0) {stackDump(stk, error, __FILE__, __func__, __LINE__, "stk");};                 \
+    if (error != 0) {stackDump(stk, error, __FILE__, __func__, __LINE__, #stk);};                 \
 } while (0);    
 
 enum ERRORS 

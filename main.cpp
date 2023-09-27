@@ -23,10 +23,9 @@ int main()
     elem_t val = 0;
     for (size_t i = 0; i < 100; i++)
         stackPop(&tststack, &val);
-    
     // stackDumpTest_t(&tststack, 24);
     for (size_t i = 0; i < tststack.size; i++)
         printf("<%d> %d ", i, tststack.dataptr[i]);
-    printf("zaebis");
+    printf("zaebis\n");
     return 0;
     }

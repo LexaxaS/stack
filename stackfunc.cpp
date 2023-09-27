@@ -7,6 +7,8 @@
 int _stackRealloc(Stack* stk, size_t capacity);
 int hashStack(Stack* stk);
 
+
+
 int hashStack(Stack* stk)
     {
     hash_t hashArr = hashCount((size_t*)((char*)stk->dataptr - 8), stk->capacity * sizeof(elem_t) + 2 * sizeof(size_t));
@@ -33,6 +35,7 @@ hash_t hashCount(void* source, size_t sizeb)
 int stackCreate(Stack* stk)
     {
     assert(stk);
+    stackDumpTest_t(stk, 24);
     stk->leftChicken = CHICKEN;
     stk->rightChicken = CHICKEN;
     stk->capacity = 8;
@@ -129,6 +132,12 @@ int verifyStack(Stack* stk)
     }
 
 //called from file: {%s} from function: {%s}
+
+// const char* varName(void* var)
+//     {
+
+//     return 1;
+//     }
 
 const char* errorStr(int code)
     {
