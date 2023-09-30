@@ -166,7 +166,7 @@ int stackDump(Stack* stk, error_t error, char* vfile, const char* vfunc, int vli
     {
     fprintf(PRINTLOGS, "\n\nStack[%p] \"%s\" from file: [%s] (%d) from function: [%s]\n", stk, stackname, vfile, vline, vfunc);
     fprintf(PRINTLOGS, "Error codes: ");
-    size_t i = 512;
+    size_t i = 1024;
     while (error > 0)
         {
         if (error >= i)
