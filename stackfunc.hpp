@@ -60,6 +60,5 @@ int stackDel(Stack* stk);
 int stackPop(Stack* stk, elem_t* value);
 int stackDump(Stack* stk, error_t error, char* vfile, const char* vfunc, int vline, /*char* cfile, char* cfunc, */ char* stackname);
 int verifyStack(Stack* stk);
-int ptrverify(elem_t* ptr);
 
 #endif
