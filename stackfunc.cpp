@@ -6,6 +6,9 @@
 
 int _stackRealloc(Stack* stk, size_t capacity);
 int hashStack(Stack* stk);
+hash_t hashCount(void* source, size_t sizeb);
+const char* errorStr(int code);
+int ptrverify(elem_t* ptr);
 
 
 
@@ -35,19 +38,15 @@ hash_t hashCount(void* source, size_t sizeb)
 int stackCreate(Stack* stk)
     {
     assert(stk);
-    stackDumpTest_t(stk, 24);
     stk->leftChicken = CHICKEN;
     stk->rightChicken = CHICKEN;
     stk->capacity = 8;
     stk->size = 0;
     stk->dataptr = (elem_t*) (calloc(2 * sizeof(size_t) + stk->capacity * sizeof(elem_t), 1) + 8);
-    size_t chicken = CHICKEN;
-    memcpy((elem_t*)((char*) stk->dataptr - 8), &chicken, 8);
-    memcpy((elem_t*)(stk->dataptr + sizeof(size_t)), &chicken, 8);
+    *(elem_t*)((char*) stk->dataptr - 8) = CHICKEN;
+    *(elem_t*)(stk->dataptr + sizeof(size_t)) = CHICKEN;
     for (size_t i = stk->size; i < stk->capacity; i++)
-        {
         stk->dataptr[i] = POISON;
-        }
     stk->stackhash = hashCount((size_t*)((char*)stk->dataptr - 8), stk->capacity * sizeof(elem_t) + 2 * sizeof(size_t));
     hashStack(stk);
     stackDump_t(stk);
@@ -63,8 +62,7 @@ int _stackRealloc(Stack* stk, size_t capacity)
         {
         stk->dataptr[i] = POISON;
         }
-    size_t chicken = CHICKEN;
-    memcpy((elem_t*)(stk->dataptr + stk->capacity), &chicken, 8);
+    *(elem_t*)(stk->dataptr + stk->capacity) = CHICKEN;
     hashStack(stk);
     stackDump_t(stk);
     return 1;
@@ -74,9 +72,7 @@ int stackPush(Stack* stk, elem_t value)
     {
     stackDump_t(stk);
     if (stk->capacity == stk->size)
-        {
         _stackRealloc(stk, stk->capacity * 2);
-        }
     stk->dataptr[stk->size++] = value;
     hashStack(stk);
     stackDump_t(stk);
@@ -88,9 +84,7 @@ int stackPop(Stack* stk, elem_t* value)
     stackDump_t(stk);
     assert(value);
     if (stk->size * 4 <= stk->capacity)
-        {
         _stackRealloc(stk, stk->capacity / 2);
-        }
     *value = (stk->dataptr[stk->size - 1]);
     stk->dataptr[stk->size] = POISON;
     stk->size--;
@@ -104,9 +98,7 @@ int stackDel(Stack* stk)
     stackDump_t(stk);
     elem_t* dta = stk->dataptr;
     for (size_t i = 0; i < stk->size; i++)
-        {
         dta[i] = POISON;
-        }
     free(stk->dataptr);
     return 1;
     }

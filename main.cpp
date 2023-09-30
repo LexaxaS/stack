@@ -18,7 +18,6 @@ int main()
     for (size_t i = 0; i < tststack.size; i++)
         printf("<%d> %d ", i, tststack.dataptr[i]);
     printf("\n");
-
     // stackDumpTest_t(&tststack, 24);
     elem_t val = 0;
     for (size_t i = 0; i < 100; i++)
