@@ -19,13 +19,14 @@ int main()
         printf("<%d> %d ", i, tststack.dataptr[i]);
     printf("\n");
     // stackDumpTest_t(&tststack, 24);
-    tststack.dataptr[127] = 8;
     elem_t val = 0;
+    tststack.dataptr[127] = 8;
     for (size_t i = 0; i < 100; i++)
         stackPop(&tststack, &val);
     // stackDumpTest_t(&tststack, 24);
     for (size_t i = 0; i < tststack.size; i++)
         printf("<%d> %d ", i, tststack.dataptr[i]);
     printf("zaebis\n");
+    stackDel(&tststack);
     return 0;
     }
