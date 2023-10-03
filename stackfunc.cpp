@@ -47,7 +47,6 @@ int stackCreate(Stack* stk)
     *(elem_t*)(stk->dataptr + sizeof(size_t)) = CHICKEN;
     for (size_t i = stk->size; i < stk->capacity; i++)
         stk->dataptr[i] = POISON;
-    stk->stackhash = hashCount((size_t*)((char*)stk->dataptr - 8), stk->capacity * sizeof(elem_t) + 2 * sizeof(size_t));
     hashStack(stk);
     stackDump_t(stk);
     return 1;
@@ -62,7 +61,7 @@ int _stackRealloc(Stack* stk, size_t capacity)
         {
         stk->dataptr[i] = POISON;
         }
-    *(elem_t*)(stk->dataptr + stk->capacity) = CHICKEN;
+    *(elem_t*)((void*)stk->dataptr + sizeof(elem_t) * stk->capacity) = CHICKEN;
     hashStack(stk);
     stackDump_t(stk);
     return 1;
@@ -83,10 +82,10 @@ int stackPop(Stack* stk, elem_t* value)
     {
     stackDump_t(stk);
     assert(value);
-    if (stk->size * 4 <= stk->capacity)
+    if (stk->size * 4 <= stk->capacity & stk->capacity > 8)
         _stackRealloc(stk, stk->capacity / 2);
-    *value = (stk->dataptr[stk->size - 1]);
-    stk->dataptr[stk->size] = POISON;
+    *value = *(elem_t*)((void*)stk->dataptr + sizeof(elem_t) * (stk->size - 1));
+    *(elem_t*)((void*)stk->dataptr + sizeof(elem_t) * (stk->size - 1)) = POISON;
     stk->size--;
     hashStack(stk);
     stackDump_t(stk);
@@ -99,7 +98,7 @@ int stackDel(Stack* stk)
     elem_t* dta = stk->dataptr;
     for (size_t i = 0; i < stk->size; i++)
         dta[i] = POISON;
-    free(stk->dataptr);
+    free((void*)((char*) stk->dataptr - 8));
     return 1;
     }
 
@@ -112,8 +111,8 @@ int verifyStack(Stack* stk)
     if (stk->size > stk->capacity) {error |= SizeTooBig;}    
     if (stk->capacity < 0) {error |= CapacityNegative;}    
     if (ptrverify(stk->dataptr)) {error |= PointerNoValid;}   
-    if (*(size_t*)((char*)stk->dataptr - 8) != CHICKEN) {error |= LeftChickenArrayDied;}    
-    if (*(size_t*)((stk->dataptr) + stk->capacity) != CHICKEN) {error |= RightChickenArrayDied;} 
+    if (*(elem_t*)((void*)stk->dataptr - sizeof(size_t)) != CHICKEN) {error |= LeftChickenArrayDied;}    
+    if (*(elem_t*)((stk->dataptr) + stk->capacity) != CHICKEN) {error |= RightChickenArrayDied;} 
     if (stk->capacity >= MAXCAPACITY) {error |= ArrayTooBig;}
     hash_t sthash = stk->stackhash;
     stk->stackhash = 0;
@@ -124,12 +123,6 @@ int verifyStack(Stack* stk)
     }
 
 //called from file: {%s} from function: {%s}
-
-// const char* varName(void* var)
-//     {
-
-//     return 1;
-//     }
 
 const char* errorStr(int code)
     {
@@ -154,7 +147,7 @@ const char* errorStr(int code)
     #undef CASE_
     }
 
-int stackDump(Stack* stk, error_t error, char* vfile, const char* vfunc, int vline, /*char* cfile, char* cfunc, */ char* stackname)
+int stackDump(Stack* stk, error_t error, char* vfile, const char* vfunc, int vline, /*char* cfile, char* cfunc, */ char* stackname, int extneeded)
     {
     fprintf(PRINTLOGS, "\n\nStack[%p] \"%s\" from file: [%s] (%d) from function: [%s]\n", stk, stackname, vfile, vline, vfunc);
     fprintf(PRINTLOGS, "Error codes: ");
@@ -189,7 +182,8 @@ int stackDump(Stack* stk, error_t error, char* vfile, const char* vfunc, int vli
     fprintf(PRINTLOGS, "        RightarrayCanary = <%llx> (should be <%llx>)\n", *(size_t*)((stk->dataptr) + stk->capacity), CHICKEN);
     fprintf(PRINTLOGS, "        }\n");
     fprintf(PRINTLOGS, "    }\n");
-    exit(0);
+    if (extneeded)
+        exit(0);
     return 1;
     }
 
