@@ -6,9 +6,11 @@
 
 int main()
     {
-    char h1[] = "Hello";
-    char h2[] = "Hello!";
-    //printf("hash(Hello) = [%llu], hash(Hello!) = [%llu]\n", hashCount(h1, sizeof(h1) - 1), hashCount(h2, sizeof(h2) - 1));
+
+    printf("Stack by Alexey3XL\n",
+           "Bring me some beer pls <3\n"
+           "\n\n\n");
+
     Stack tststack = {};
     stackCreate(&tststack);
 
@@ -17,13 +19,15 @@ int main()
 
     for (size_t i = 0; i < tststack.size; i++)
         printf("<%d> %d ", i, tststack.dataptr[i]);
-    printf("\n");
     // stackDumpTest_t(&tststack, 24);
+    printf("\n");
     elem_t val = 0;
-    tststack.dataptr[127] = 8;
+
+    tststack.dataptr[127] = 1000;
+    stackDumpTest_t(&tststack, 24);
+
     for (size_t i = 0; i < 100; i++)
         stackPop(&tststack, &val);
-    // stackDumpTest_t(&tststack, 24);
     for (size_t i = 0; i < tststack.size; i++)
         printf("<%d> %d ", i, tststack.dataptr[i]);
     printf("zaebis\n");
