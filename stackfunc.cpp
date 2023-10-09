@@ -9,7 +9,7 @@
 
 int hashingStack(Stack* stk)
     {
-    hash_t hashArr = hashCount((size_t*)((char*)stk->dataptr - sizeof(chicken_t)), stk->capacity * sizeof(elem_t) + 2 * sizeof(chicken_t));
+    hash_t hashArr = hashCount((size_t*)((char*)stk->dataptr - sizeof(chicken_t)), stk->capacity * sizeof(elem_t));
     stk->arrayhash = hashArr;
     stk->stackhash = 0;
     hash_t hashStk = hashCount(stk, sizeof(*stk));
@@ -20,6 +20,7 @@ int hashingStack(Stack* stk)
 hash_t hashCount(void* source, size_t sizeb)
     {
     hash_t hash = 5381;
+    sizeb -= 16;
     size_t c = 0;
 
     while (c < sizeb)
@@ -134,7 +135,7 @@ int verifyStack(Stack* stk)
     stk->stackhash = 0;
     if (hashCount(stk, sizeof(*stk)) != sthash)                             {error |= StackHashWrong;}
     stk->stackhash = sthash;
-    if (hashCount((size_t*)((char*)stk->dataptr - sizeof(chicken_t)), stk->capacity * sizeof(elem_t) + 2 * sizeof(chicken_t)) != stk->arrayhash)
+    if (hashCount((size_t*)((char*)stk->dataptr - sizeof(chicken_t)), stk->capacity * sizeof(elem_t)) != stk->arrayhash)
                                                                             {error |= ArrayHashWrong;}
 
     return error;
