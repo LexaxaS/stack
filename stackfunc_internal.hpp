@@ -6,4 +6,8 @@
 #define MAXCAPACITY (SIZE_MAX / 2)
 #define PRINTLOGS "logs.txt"
 
+#ifndef PRINTLOGS
+#define PRINTLOGS "stderr"
+#endif
+
 #endif
