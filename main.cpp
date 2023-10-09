@@ -12,14 +12,13 @@ int main()
     Stack tststack = {};
     stackCreate(&tststack);
 
-    for (size_t i = 0; i < 300; i++)
+    for (size_t i = 0; i < 100; i++)
         stackPush(&tststack, i);
 
     for (size_t i = 0; i < tststack.size; i++)
         printf("<%d> %d ", i, tststack.dataptr[i]);
     // stackDumpTest_t(&tststack, 24);
     printf("\n");
-    // *(tststack.dataptr + 128) = 5;
     elem_t val = 0;
     for (size_t i = 0; i < 100; i++)
         stackPop(&tststack, &val);
